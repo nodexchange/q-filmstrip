@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  // background-color: black;
+}
+$item-width: 300px; // Now we can use percentages!
+$item-height: 600px; // Now we can use percentages!
+.filmstrip-container {
+  border: 1px gray solid;
+  position: absolute;
+  top:0;
+  left: 0;
+  display: block;
+  opacity: 0;
+  width: $item-width;
+  height:  $item-height;
+  overflow: hidden;
+  transition: opacity 1.3s;
+  transition-timing-function: cubic-bezier(0, 0.4, 0.7, 1);
+  .filmstrip {
+    width: $item-width;
+    height: $item-height;
+    transition: top 1.3s;
+    transition-timing-function: ease-out;
+    position: absolute;
+    top:0;
+    left: 0;
+    div {
+      cursor: pointer;
+      width: $item-width;
+      height: $item-height;
+      background-size: cover !important;
+    }
+  }
+}
+
+/*
+@media (min-width: 1180px) {
+  .carousel {
+    margin-top: 7%;
+  }
+}
+
+@media (max-width: 1080px) {
+  .carousel {
+    margin-top: 9%;
+  }
+}
+
+@media (max-width: 880px) {
+  .carousel {
+    margin-top: 14%;
+  }
+}
+
+@media (max-width: 680px) {
+  .carousel {
+    margin-top: 16%;
+  }
+}
+*/
