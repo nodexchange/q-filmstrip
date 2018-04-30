@@ -6,7 +6,7 @@
 <title>Filmstrip</title>
 <script type="text/javascript" src="ADTECH.js"></script>
 <style>
-  body{margin:0}.filmstrip-container{border:1px gray solid;position:absolute;top:0;left:0;display:block;opacity:0;width:300px;height:600px;overflow:hidden;transition:opacity 1.3s;transition-timing-function:cubic-bezier(0, 0.4, 0.7, 1)}.filmstrip-container .filmstrip{width:300px;height:600px;transition:top 1.3s;transition-timing-function:ease-out;position:absolute;top:0;left:0}.filmstrip-container .filmstrip div{cursor:pointer;width:300px;height:600px;background-size:cover !important}
+  body{margin:0}.filmstrip-container{border:1px gray solid;position:absolute;top:0;left:0;display:block;opacity:0;width:298px;height:598px;overflow:hidden;transition:opacity 1.3s;transition-timing-function:cubic-bezier(0, 0.4, 0.7, 1)}.filmstrip-container .filmstrip{width:300px;height:600px;transition:top 1.3s;transition-timing-function:ease-out;position:absolute;top:0;left:0}.filmstrip-container .filmstrip .video-player{cursor:pointer;width:300px;height:600px;object-fit:cover}.filmstrip-container .filmstrip div{cursor:pointer;width:300px;height:600px;background-size:cover !important}
 ;
 </style>
 
@@ -31,23 +31,89 @@ class Filmstrip {
     this.currentViewedItem = 0;
     this.items = items;
     this.maxRange = (items.length - 1) * 600; // height of the unit
+    this.videoArray = [{},{},{},{},{},{}];
     this.create(items);
     this.setup(settings);
+    this.videoStatus = 'paused';
   }
   create(items) {
     for (let i = 0; i < items.length; i++) {
-      let image = document.createElement('div');
-      image.style.background = 'url("' + items[i]['image source'] + '")';
-      image.id = 'image' + (i + 1);
-      image.addEventListener('click', (e) => {
-        let id = parseFloat(e.target.id.split('e')[1]) - 1;
-        ADTECH.contentClick('Filmstrip Items', 'clickthrough', this.items[id]);
-      });
-      this.filmstrip.appendChild(image);
+      console.log(items[i]['type']);
+      let element = {};
+      switch (items[i].type) {
+        case 'image': 
+          element = this.createImage(items[i], i);
+          break;
+        case 'video':
+          element = this.createVideo(items[i], i);
+          break;
+        case 'image||video': //offline
+          element = this.createVideo(items[i], i);
+        break;
+        default:
+          console.log('type not found');
+        break;
+      }
+      this.filmstrip.appendChild(element);
     }
+  }
+  createImage(item, i) {
+    let image = document.createElement('div');
+    image.style.background = 'url("' + item['image source'] + '")';
+    image.id = 'image' + (i + 1);
+    image.addEventListener('click', (e) => {
+      let id = parseFloat(e.target.id.split('e')[1]) - 1;
+      ADTECH.contentClick('Filmstrip Items', 'clickthrough', this.items[id]);
+    });
+    return image;
+  }
+  createVideo(item, i) {
+    let videoNode = document.createElement('video');
+    videoNode.src = item['video mp4 source'];
+    videoNode.id = 'video' + (i + 1);
+    ADTECH.registerVideoPlayer(videoNode, 'video' + (i + 1));
+    this.videoArray[i] = videoNode;
+    videoNode.className = 'video-player';
+    videoNode.poster = item['video poster'];
+    videoNode.volume = 0;
+    videoNode.onclick = (e) => {
+      if (e.target.paused) {
+          e.target.play();
+      } else {
+          e.target.pause();
+      }
+      if (e.target.volume === 0) {
+        e.target.volume = 0.7;
+      } else {
+        e.target.volume = 0;
+      }
+      let id = parseFloat(e.target.id.split('e')[1]) - 1;
+      ADTECH.contentClick('Filmstrip Items', 'clickthrough', this.items[id]);
+    };
+    return videoNode;
   }
   setup() {
 
+  }
+  playCurrentVideo(id) {
+    if (this.videoStatus === 'paused') {
+      this.videoStatus = 'playing';
+      if (this.videoArray[id]) {
+        if (this.videoArray[id].play) {
+          this.videoArray[id].play();
+        }
+      }
+    }
+  }
+  pauseCurrentVideo(id) {
+    if (this.videoStatus === 'playing') {
+      this.videoStatus = 'paused';
+      if (this.videoArray[id]) {
+        if (this.videoArray[id].pause) {
+          this.videoArray[id].pause();
+        }
+      }
+    }
   }
   scroll(percentage) {
     let scrollValue = (this.maxRange / 100) * percentage;
@@ -67,7 +133,9 @@ class Filmstrip {
       } else {
         this.filmstrip.style.top = -Math.floor(currentProgress) * range + 'px';
       }
+      this.playCurrentVideo(Math.floor(currentProgress));
     } else {
+      this.pauseCurrentVideo(Math.floor(currentProgress));
       this.filmstrip.style.top = -scrollValue + 'px';
     }
   }
@@ -90,7 +158,7 @@ class Filmstrip {
 }
 
 ADTECH.ready(() => {
-  items = ADTECH.getContent('Filmstrip Items', [{'image source': 'image1.jpg','clickthrough': 'http://test1.com/'},{'image source': 'image1.jpg','clickthrough': 'http://test1.com/'},{'image source': 'image1.jpg','clickthrough': 'http://test1.com/'}, {'image source': 'image2.jpg','clickthrough': 'http://test2.com/'}]);
+  items = ADTECH.getContent('Filmstrip Items', [{'type':'image||video', 'video mp4 source':'video1.mp4', 'video poster':'video1.jpg', 'image source': 'image1.jpg','clickthrough': 'http://test1.com/'},{'type':'image||video', 'video mp4 source':'video1.mp4', 'video poster':'video1.jpg', 'image source': 'image2.jpg','clickthrough': 'http://test1.com/'},{'type':'image||video', 'video mp4 source':'video1.mp4', 'video poster':'video1.jpg', 'image source': 'image3.jpg','clickthrough': 'http://test1.com/'}, {'type':'image||video', 'video mp4 source':'video1.mp4', 'video poster':'video1.jpg', 'image source': 'image4.jpg','clickthrough': 'http://test2.com/'}]);
   settings = ADTECH.getContent('Filmstrip Animation Settings', 'Linear||Ease out');
   filmstripContainer = document.getElementsByClassName('filmstrip')[0]
   filmstrip = new Filmstrip(filmstripContainer, items, settings);
@@ -101,6 +169,8 @@ ADTECH.ready(() => {
 
   function scrollHandler(evt) {
     let scrollValue = evt.meta.scrollValue;
+    console.log('>>> ad : scrollValue : ' + scrollValue);
+    scrollValue = scrollValue * 100;
     if (typeof scrollValue === 'number') {
       if (scrollValue < 101) {
         filmstrip.scroll(scrollValue);
@@ -112,6 +182,8 @@ ADTECH.ready(() => {
       // }
     }
   }
+  
+  /*
   setInterval(() => {
     let evt = {};
     evt.meta = {};
@@ -121,14 +193,21 @@ ADTECH.ready(() => {
       return;
     }
     scrollHandler(evt)
-  }, 300);
-  
-  /*
+  }, 1000);
   setTimeout(() => {
     //filmstrip.nextItem();
   }, 2000);
 */
 });
+
+/*
+  ADTECH.registerVideoPlayer(null, 'video1');
+  ADTECH.registerVideoPlayer(null, 'video2');
+  ADTECH.registerVideoPlayer(null, 'video3');
+  ADTECH.registerVideoPlayer(null, 'video4');
+  ADTECH.registerVideoPlayer(null, 'video5');
+  ADTECH.registerVideoPlayer(null, 'video6');
+*/
 
 let dummyScroll = 0;
 

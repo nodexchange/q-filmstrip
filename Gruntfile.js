@@ -92,7 +92,7 @@ module.exports = grunt => {
       },
       videos: {
         options: {
-          maxBytes: 2306867 // 2.2mb
+          maxBytes: 3306867 // 3.2mb
         },
         src: ['dist/*.mp4', 'dist/*.webm']
       },

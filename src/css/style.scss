@@ -11,8 +11,8 @@ $item-height: 600px; // Now we can use percentages!
   left: 0;
   display: block;
   opacity: 0;
-  width: $item-width;
-  height:  $item-height;
+  width: $item-width - 2;
+  height:  $item-height - 2; // borders
   overflow: hidden;
   transition: opacity 1.3s;
   transition-timing-function: cubic-bezier(0, 0.4, 0.7, 1);
@@ -24,6 +24,12 @@ $item-height: 600px; // Now we can use percentages!
     position: absolute;
     top:0;
     left: 0;
+    .video-player {
+      cursor: pointer;
+      width: $item-width;
+      height: $item-height;
+      object-fit: cover;
+    }
     div {
       cursor: pointer;
       width: $item-width;
