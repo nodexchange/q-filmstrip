@@ -15,11 +15,12 @@ $item-height: 600px; // Now we can use percentages!
   height:  $item-height - 2; // borders
   overflow: hidden;
   transition: opacity 1.3s;
-  transition-timing-function: cubic-bezier(0, 0.4, 0.7, 1);
+  // transition-timing-function: cubic-bezier(0, 0.4, 0.7, 1);
   .filmstrip {
     width: $item-width;
     height: $item-height;
-    transition: top 1.3s;
+    transition: top 1.4s ease-in-out;
+    
     transition-timing-function: ease-out;
     position: absolute;
     top:0;

@@ -10,6 +10,8 @@ let filmstripContainer = {}
 class Filmstrip {
   constructor(filmstrip, items, settings) {
     this.filmstrip = filmstrip;
+    this.previousPercentage = 0;
+    this.currentTop = 0;
     this.currentViewedItem = 0;
     this.items = items;
     this.maxRange = (items.length - 1) * 600; // height of the unit
@@ -30,7 +32,8 @@ class Filmstrip {
           element = this.createVideo(items[i], i);
           break;
         case 'image||video': //offline
-          element = this.createVideo(items[i], i);
+          element = this.createImage(items[i], i);
+          // element = this.createVideo(items[i], i);
         break;
         default:
           console.log('type not found');
@@ -98,27 +101,52 @@ class Filmstrip {
     }
   }
   scroll(percentage) {
+    let scrollDirection = 'down';
+    if (this.previousPercentage > percentage) {
+      scrollDirection = 'up';
+    }
+    this.previousPercentage = percentage;
     let scrollValue = (this.maxRange / 100) * percentage;
+    let increase = this.maxRange / (this.items.length - 1) / (28 / this.items.length);
     let range = this.maxRange / (this.items.length - 1);
     let currentProgress = scrollValue / range;
+    let maxSectionRange = (Math.floor(currentProgress) + 1) * range;
+    console.log(maxSectionRange, this.currentTop, ' increase : ' + increase);
+    if (currentProgress >= (this.items.length - 1)) {
+      console.log('ENDDD');
+      return;
+    }
+    if (this.currentTop > maxSectionRange) {
+      // this.filmstrip.style.transition = 'top 0.1s';
+      this.filmstrip.style.top = -Math.floor(currentProgress + 1) * range + 'px';
+      return;
+    }
     if (
-      (currentProgress >= 0 && currentProgress < 0.3) || 
-      (currentProgress >= 1 && currentProgress < 1.3) || 
-      (currentProgress >= 2 && currentProgress < 2.3) || 
-      (currentProgress >= 3 && currentProgress < 3.3) || 
-      (currentProgress >= 4 && currentProgress < 4.3) || 
-      (currentProgress >= 5 && currentProgress < 5.3) || 
-      (currentProgress >= 6 && currentProgress < 6.3)
+      (currentProgress >= 0 && currentProgress < 0.5) || 
+      (currentProgress >= 1 && currentProgress < 1.5) || 
+      (currentProgress >= 2 && currentProgress < 2.5) || 
+      (currentProgress >= 3 && currentProgress < 3.5) || 
+      (currentProgress >= 4 && currentProgress < 4.5) || 
+      (currentProgress >= 5 && currentProgress < 5.5) || 
+      (currentProgress >= 6 && currentProgress < 6.5)
     ) {
       if (Math.floor(currentProgress) === 0) {
         this.filmstrip.style.top = '0px';
       } else {
+        // this.filmstrip.style.transition = 'top 1.4s ease-in-out';
         this.filmstrip.style.top = -Math.floor(currentProgress) * range + 'px';
+        this.currentTop = Math.floor(currentProgress) * range;
       }
       this.playCurrentVideo(Math.floor(currentProgress));
     } else {
       this.pauseCurrentVideo(Math.floor(currentProgress));
-      this.filmstrip.style.top = -scrollValue + 'px';
+      if (scrollDirection === 'down') {
+        this.currentTop += increase;
+      } else {
+        this.currentTop -= increase;
+      }
+      console.log(this.currentTop, 'current top');
+      this.filmstrip.style.top = -(this.currentTop) + 'px';
     }
   }
   nextItem() {
@@ -152,7 +180,7 @@ ADTECH.ready(() => {
   function scrollHandler(evt) {
     let scrollValue = evt.meta.scrollValue;
     console.log('>>> ad : scrollValue : ' + scrollValue);
-    scrollValue = scrollValue * 100;
+    scrollValue = scrollValue;
     if (typeof scrollValue === 'number') {
       if (scrollValue < 101) {
         filmstrip.scroll(scrollValue);
@@ -164,7 +192,6 @@ ADTECH.ready(() => {
       // }
     }
   }
-  
   /*
   setInterval(() => {
     let evt = {};
@@ -175,13 +202,12 @@ ADTECH.ready(() => {
       return;
     }
     scrollHandler(evt)
-  }, 1000);
+  }, 500);
   setTimeout(() => {
     //filmstrip.nextItem();
   }, 2000);
-*/
+  */
 });
-
 /*
   ADTECH.registerVideoPlayer(null, 'video1');
   ADTECH.registerVideoPlayer(null, 'video2');
