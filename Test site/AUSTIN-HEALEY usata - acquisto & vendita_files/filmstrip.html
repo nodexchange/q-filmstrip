@@ -1,4 +1,15 @@
-'use strict';
+<!DOCTYPE html>
+<!-- saved from url=(0055)https://ads.pictela.net/rm/ads/393203/56/filmstrip.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+      
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Filmstrip</title>  
+<script type="text/javascript" src="./ADTECH_1_12_3.js"></script>  
+<style>
+  body{margin:0}.filmstrip-container{border:1px gray solid;position:absolute;top:0;left:0;display:block;opacity:0;width:298px;height:598px;overflow:hidden;transition:opacity 1.3s}.filmstrip-container .filmstrip{width:300px;height:600px;transition:top 1.4s ease-in-out;transition-timing-function:ease-out;position:absolute;top:0;left:0}.filmstrip-container .filmstrip .video-player{cursor:pointer;width:300px;height:600px;object-fit:cover}.filmstrip-container .filmstrip div{cursor:pointer;width:300px;height:600px;background-size:cover !important}
+;
+</style>   </head>  <body>     <div class="filmstrip-container" style="opacity: 1;">       <div class="filmstrip" style="top: -600px;"><div id="image1" style="background: url(&quot;https://ads.pictela.net/rm/ads/393203/56/300x600-BMW-SERIE-5.gif&quot;);"></div><div id="image2" style="background: url(&quot;https://ads.pictela.net/rm/ads/393203/56/cpo-pova-300x600-4-f1_orig.jpg&quot;);"></div><div id="image3" style="background: url(&quot;https://ads.pictela.net/rm/ads/393203/56/cpo-pova-300x600-4-f5_orig.jpg&quot;);"></div><div id="image4" style="background: url(&quot;https://ads.pictela.net/rm/ads/393203/56/photo19.png&quot;);"></div></div>     </div>    <script>
+    'use strict';
 
 /* global ADTECH */
 
@@ -101,6 +112,8 @@ class Filmstrip {
     }
   }
   scroll(percentage) {
+    console.log('@@@@@@@ : HERE');
+		percentage = percentage * 100;
     let scrollDirection = 'down';
     if (this.previousPercentage > percentage) {
       scrollDirection = 'up';
@@ -111,20 +124,18 @@ class Filmstrip {
     let range = this.maxRange / (this.items.length - 1);
     let currentProgress = scrollValue / range;
     let maxSectionRange = (Math.floor(currentProgress) + 1) * range;
-    console.log(maxSectionRange, this.currentTop, ' increase : ' + increase);
-    if (currentProgress === 0 && percentage === 0 && this.currentTop > 0) {
-      this.filmstrip.style.top = '0px';
-      this.currentTop = 0;
-    }
+    console.log(maxSectionRange, this.currentTop, ' increase : ' + increase, 'percentage @'+percentage);
     if (currentProgress >= (this.items.length - 1)) {
       console.log('ENDDD');
       return;
     }
+		console.log('[q] : ' + this.currentTop + ' ::: maxSectionRange : ' + maxSectionRange);
     if (this.currentTop > maxSectionRange) {
       // this.filmstrip.style.transition = 'top 0.1s';
       this.filmstrip.style.top = -Math.floor(currentProgress + 1) * range + 'px';
       return;
     }
+		console.log('[martin] ____ containues', currentProgress);
     if (
       (currentProgress >= 0 && currentProgress < 0.5) || 
       (currentProgress >= 1 && currentProgress < 1.5) || 
@@ -136,7 +147,6 @@ class Filmstrip {
     ) {
       if (Math.floor(currentProgress) === 0) {
         this.filmstrip.style.top = '0px';
-        this.currentTop = 0;
       } else {
         // this.filmstrip.style.transition = 'top 1.4s ease-in-out';
         this.filmstrip.style.top = -Math.floor(currentProgress) * range + 'px';
@@ -223,3 +233,8 @@ ADTECH.ready(() => {
 */
 
 let dummyScroll = 0;
+
+  </script> 
+  
+
+</body></html>

@@ -1,0 +1,18 @@
+
+var pubId=67137;
+var siteId=175368;
+var kadId=913840;
+var kadwidth=728;
+var kadheight=90;
+var kadtype=1;
+var kadpageurl= "https://www.autoscout24.ch/it/automobili/austin-healey?make=221&st=1&vehtyp=10";
+var kaddctr="make=austinhealey|model=";
+
+document.write("<scr"+"ipt type=\"text/javascript\" src=\"https://ads.pubmatic.com/AdServer/js/showad.js\"></scr"+"ipt>\n");
+
+
+
+if (780 == 780 && 1 == 2) {
+    document.write('<img src="https://tr1.admeira.ch/tr1.admeira.ch/v1/custom-no-tagger?type=view&placement_id=1491115&flight_id=16405418&banner_id=1&user_id=9FDCF2A5EEE4B6CE739CC2C1FD830265" style="display:none !important;">');
+    document.write('<scri'+'pt type="text/javascr'+'ipt" async="async" src="https://s407.meetrics.net/bb-mx/prime/mtrcs_368021.js?pjid=368021&cpid=16405418&site=1021655&cid=1&place=1491115&adc=14509551&size=728x90&cb=571040977"></scr'+'ipt>');
+}document.write("<scr"+"ipt src=\""+(window.location.protocol=='https:' ? "https://aka-cdn.adtechus.com" : "http://aka-cdn-ns.adtechus.com")+"/media/moat/adtechbrands092348fjlsmdhlwsl239fh3df/moatad.js#moatClientLevel1=780&moatClientLevel2=1021655&moatClientLevel3=0&moatClientLevel4=1491115&zMoatMaster=14509551&zMoatFlight=16405418&zMoatBanner=110747091&zURL=https&zMoatPlacementId=1491115&zMoatAdId=16405418&zMoatCreative=0&zMoatBannerID=1&zMoatCustomVisp=50&zMoatCustomVist=1000&zMoatIsAdvisGoal=0&zMoatEventUrl=&zMoatSize=225&zMoatSubNetID=1&zMoatisSelected=1&zMoatadServer=secserv.adtech.de&zMoatadVisServer=&zMoatSamplingRate=23&zMoatliveTestCookie=&zMoatRefSeqId=6cBAIAzAOGA&zMoatImpRefTs=1529571041&zMoatAlias=&zMoatVert=&zMoatBannerInfo=400467964\" type=\"text/javascript\"></scr"+"ipt>");

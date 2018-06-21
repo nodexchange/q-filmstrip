@@ -112,6 +112,10 @@ class Filmstrip {
     let currentProgress = scrollValue / range;
     let maxSectionRange = (Math.floor(currentProgress) + 1) * range;
     console.log(maxSectionRange, this.currentTop, ' increase : ' + increase);
+    if (currentProgress === 0 && percentage === 0 && this.currentTop > 0) {
+      this.filmstrip.style.top = '0px';
+      this.currentTop = 0;
+    }
     if (currentProgress >= (this.items.length - 1)) {
       console.log('ENDDD');
       return;
@@ -132,6 +136,7 @@ class Filmstrip {
     ) {
       if (Math.floor(currentProgress) === 0) {
         this.filmstrip.style.top = '0px';
+        this.currentTop = 0;
       } else {
         // this.filmstrip.style.transition = 'top 1.4s ease-in-out';
         this.filmstrip.style.top = -Math.floor(currentProgress) * range + 'px';
